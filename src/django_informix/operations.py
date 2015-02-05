@@ -1,7 +1,7 @@
 from django.db.backends import BaseDatabaseOperations
 
 class DatabaseOperations(BaseDatabaseOperations):
-    compiler_module = "django_jdbc_informix.compiler"
+    compiler_module = "django_informix.compiler"
     def quote_name(self, name):
         return name
 
