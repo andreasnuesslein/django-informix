@@ -45,9 +45,8 @@ class DatabaseIntrospection(BaseDatabaseIntrospection):
 
 
     def get_table_list(self, cursor):
-        return ['a_aanutz','a_abnutz','a_acnutz']
-        # cursor.execute('SELECT tabname FROM systables')
-        # return [x[0] for x in cursor.fetchall()]
+        cursor.execute('SELECT tabname FROM systables')
+        return [x[0] for x in cursor.fetchall()]
 
 
     def get_table_description(self, cursor, table_name, identity_check=True):
