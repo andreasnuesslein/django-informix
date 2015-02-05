@@ -5,8 +5,8 @@ import jaydebeapi as Database
 import sys
 from django.db import utils
 
-from django_jdbc_informix.introspection import DatabaseIntrospection
-from django_jdbc_informix.operations import DatabaseOperations
+from django_informix.introspection import DatabaseIntrospection
+from django_informix.operations import DatabaseOperations
 
 DatabaseError = Database.Error
 IntegrityError = Database.IntegrityError

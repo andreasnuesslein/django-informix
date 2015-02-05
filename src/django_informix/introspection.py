@@ -1,5 +1,4 @@
 from django.db.backends import BaseDatabaseIntrospection, FieldInfo
-import jaydebeapi as Database
 
 #from the JDBC Informix driver
 SQ_TYPE_BYTE = 11
