@@ -19,9 +19,12 @@ class DatabaseFeatures(BaseDatabaseFeatures):
     supports_subqueries_in_group_by = False
 
     supports_transactions = True
+    autocommits_when_autocommit_is_off = True
 
+    #atomic_transactions =
     # TODO: sollte schon passen . Muss aber noch gefixt werden wie die genau aussehen.
-    #uses_savepoints = True
+    # uses_savepoints = True
+    uses_savepoints = True
 
     supports_timezones = False
     supports_sequence_reset = False
@@ -117,7 +120,18 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         pass
 
     def _set_autocommit(self, autocommit):
+        print("AC ", autocommit)
         self.connection.autocommit = autocommit
+
+    def _start_transaction_under_autocommit(self):
+        """
+        Start a transaction explicitly in autocommit mode.
+
+        Staying in autocommit mode works around a bug of sqlite3 that breaks
+        savepoints when autocommit is disabled.
+        """
+        startsql = self.ops.start_transaction_sql()
+        self.cursor().execute(startsql)
 
     def create_cursor(self):
         return CursorWrapper(self.connection.cursor())
@@ -155,7 +169,7 @@ class CursorWrapper:
         self.last_sql, self.last_params = sql, params
 
         try:
-            #print(sql,params)
+            # print(sql,params)
             return self.cursor.execute(sql, params)
         except IntegrityError:
             e = sys.exc_info()[1]

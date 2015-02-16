@@ -37,8 +37,25 @@ class DatabaseOperations(BaseDatabaseOperations):
     def date_extract_sql(self, lookup_type, field_name):
         sqlmap = {
             'week_day': 'WEEKDAY',
-            #'year': 'YEAR',
+            #'year': 'YEAR', # Geht leider nicht. scheint vorher abgegriffen zu werden und dann: RuntimeError: No matching overloads found. at src/native/common/jp_method.cpp:121>
             'month': 'MONTH',
             'day': 'DAY'
         }
         return "%s(%s)" % (sqlmap[lookup_type],field_name)
+
+    def start_transaction_sql(self):
+        return "BEGIN WORK"
+
+    def end_transaction_sql(self, success=True):
+        return "COMMIT WORK"
+
+
+    def savepoint_create_sql(self, sid):
+        return "SAVEPOINT %s ON ROLLBACK RETAIN CURSORS" % sid
+
+    def savepoint_commit_sql(self, sid):
+        return "RELEASE SAVEPOINT %s" % sid
+
+    def savepoint_rollback(self, sid):
+        return "ROLLBACK TO SAVEPOINT %s" % sid
+
