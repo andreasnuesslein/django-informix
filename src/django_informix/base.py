@@ -12,6 +12,7 @@ DatabaseError = Database.Error
 IntegrityError = Database.IntegrityError
 
 class DatabaseFeatures(BaseDatabaseFeatures):
+    # needs_datetime_string_cast = False
     can_use_chunked_reads = True
 
     supports_microsecond_precision = False
@@ -37,7 +38,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
     #ignores_nulls_in_unique_constraints = False
 
     #has_bulk_insert = False
-    # DateTimeField doesn't support timezones, only DateTimeOffsetField
 
 
 class DatabaseWrapper(BaseDatabaseWrapper):

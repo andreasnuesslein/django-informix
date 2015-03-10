@@ -1,3 +1,4 @@
+import datetime
 from django.db.backends import BaseDatabaseOperations
 
 class DatabaseOperations(BaseDatabaseOperations):
@@ -43,6 +44,11 @@ class DatabaseOperations(BaseDatabaseOperations):
         }
         return "%s(%s)" % (sqlmap[lookup_type],field_name)
 
+    def year_lookup_bounds_for_date_field(self, value):
+        first = datetime.date(value, 1, 1)
+        last = datetime.date(value, 12, 31)
+        return [first, last]
+
     def start_transaction_sql(self):
         return "BEGIN WORK"
 
@@ -59,3 +65,18 @@ class DatabaseOperations(BaseDatabaseOperations):
     def savepoint_rollback(self, sid):
         return "ROLLBACK TO SAVEPOINT %s" % sid
 
+
+    def convert_values(self, value, field):
+        if value is None or field is None:
+            return value
+        internal_type = field.get_internal_type()
+        if internal_type == 'FloatField':
+            return float(value)
+        elif (internal_type and (internal_type.endswith('IntegerField')
+                                 or internal_type == 'AutoField')):
+            return int(value)
+        if internal_type == 'DateField':
+            return datetime.datetime.strptime(value,'%Y-%m-%d').date()
+        if internal_type == 'DateTimeField':
+            return datetime.datetime.strptime(value,'%Y-%m-%d %H:%M:%S')
+        return value
