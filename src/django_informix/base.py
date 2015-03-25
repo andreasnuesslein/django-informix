@@ -95,10 +95,6 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         self.validation = BaseDatabaseValidation(self)
         self.creation = BaseDatabaseCreation(self)
 
-        # self.client = DatabaseClient(self)
-
-        #
-
         self.connection = None
 
 
@@ -114,13 +110,14 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         return conn_params
 
     def get_new_connection(self, conn_params):
-        return Database.connect(**conn_params)
+        self.connection = Database.connect(**conn_params)
+        return self.connection
 
     def init_connection_state(self):
         pass
 
     def _set_autocommit(self, autocommit):
-        print("AC ", autocommit)
+        #print("AC ", autocommit)
         self.connection.autocommit = autocommit
 
     def _start_transaction_under_autocommit(self):
