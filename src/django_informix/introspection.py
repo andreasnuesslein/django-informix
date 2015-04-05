@@ -1,4 +1,4 @@
-from django.db.backends import BaseDatabaseIntrospection, FieldInfo
+from django.db.backends.base.introspection import BaseDatabaseIntrospection, FieldInfo
 
 #from the JDBC Informix driver
 SQ_TYPE_BYTE = 11

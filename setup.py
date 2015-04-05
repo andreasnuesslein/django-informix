@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='django_informix',
-    version='1.3',
+    version='1.4',
     packages=['django_informix'],
     package_dir={'': 'src'},
     url='https://github.com/nutztherookie/django-informix',

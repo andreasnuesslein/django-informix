@@ -1,5 +1,6 @@
 import datetime
-from django.db.backends import BaseDatabaseOperations
+from django.db.backends.base.operations import BaseDatabaseOperations
+
 
 class DatabaseOperations(BaseDatabaseOperations):
     compiler_module = "django_informix.compiler"

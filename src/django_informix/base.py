@@ -1,5 +1,7 @@
-from django.db.backends import BaseDatabaseWrapper, BaseDatabaseFeatures, BaseDatabaseValidation
-from django.db.backends.creation import BaseDatabaseCreation
+from django.db.backends.base.base import BaseDatabaseWrapper
+from django.db.backends.base.creation import BaseDatabaseCreation
+from django.db.backends.base.features import BaseDatabaseFeatures
+from django.db.backends.base.validation import BaseDatabaseValidation
 
 import jaydebeapi as Database
 import sys
