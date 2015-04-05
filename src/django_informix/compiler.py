@@ -176,26 +176,14 @@ class SQLCompiler(compiler.SQLCompiler):
         # characters, but those happen to also be the quoting tokens for IBM's
         # DB2
 
-
-
-
 class SQLInsertCompiler(compiler.SQLInsertCompiler, SQLCompiler):
     pass
 
 class SQLAggregateCompiler(compiler.SQLAggregateCompiler, SQLCompiler):
     pass
-    # def as_sql(self, qn=None):
-    #     self._fix_aggregates()
-    #     return super(SQLAggregateCompiler, self).as_sql(qn=qn)
 
 class SQLDeleteCompiler(compiler.SQLDeleteCompiler, SQLCompiler):
     pass
 
 class SQLUpdateCompiler(compiler.SQLUpdateCompiler, SQLCompiler):
-    pass
-
-class SQLDateCompiler(compiler.SQLDateCompiler, SQLCompiler):
-    pass
-
-class SQLDateTimeCompiler(compiler.SQLDateCompiler, SQLCompiler):
     pass
