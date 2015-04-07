@@ -151,20 +151,28 @@ class CursorWrapper:
         self.last_params = ()
         self.encoding = encoding
 
-    def format_sql(self, sql, n_params=None):
-            if n_params:
-                try:
-                    sql = sql % tuple('?' * n_params)
-                except:
-                    # Todo checkout whats happening here
-                    pass
-            else:
-                if '%s' in sql:
-                    sql = sql.replace('%s', '?')
-            return sql
+    def format_sql(self, sql, params):
+        n_params = len(params)
+        if n_params:
+            if '*' in params:
+                pos = params.index('*')
+                sql = sql.replace('%s','*', pos +1)
+                sql = sql.replace('*','%s', pos)
+                #self.dashrepl(sql,params.index('*'))
+                params = params[:pos] + params[pos+1:]
+                n_params -= 1
+
+            sql = sql % tuple('?' * n_params)
+
+        else:
+            if '%s' in sql:
+                print("This should'nt be happening")
+                sql = sql.replace('%s', '?')
+        return sql, params
 
     def execute(self, sql, params=()):
-        sql = self.format_sql(sql, len(params))
+        # print(sql,params)
+        sql, params = self.format_sql(sql, params)
         self.last_sql, self.last_params = sql, params
 
         try:
