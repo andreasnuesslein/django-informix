@@ -35,18 +35,6 @@ class DatabaseOperations(BaseDatabaseOperations):
             if expression.function in ['VAR_POP','VAR_SAMP']:
                 expression.function = 'VARIANCE'
 
-    # def last_executed_query(self, cursor, sql, params):
-    #     """
-    #     Returns a string of the query last executed by the given cursor, with
-    #     placeholders replaced with actual values.
-    #
-    #     `sql` is the raw query containing placeholders, and `params` is the
-    #     sequence of parameters. These are used by default, but this method
-    #     exists for database backends to provide a better implementation
-    #     according to their own quoting schemes.
-    #     """
-    #     return super(DatabaseOperations, self).last_executed_query(cursor, cursor.last_sql, cursor.last_params)
-
     def date_extract_sql(self, lookup_type, field_name):
         sqlmap = {
             'week_day': 'WEEKDAY',
@@ -83,7 +71,11 @@ class DatabaseOperations(BaseDatabaseOperations):
         #print(print(expression)
         converters = super(DatabaseOperations, self).get_db_converters(expression)
         internal_type = expression.output_field.get_internal_type()
-        if internal_type == 'DateTimeField':
+        if internal_type == 'BooleanField':
+            converters.append(lambda value,*_: True if value == 1 else False)
+        elif internal_type == 'NullBooleanField':
+            converters.append(lambda value,*_: True if value == 1 else False if value == 0 else None)
+        elif internal_type == 'DateTimeField':
              converters.append(self.convert_datetimefield_value)
         elif internal_type == 'DateField':
             converters.append(self.convert_datefield_value)
